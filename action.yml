@@ -1,0 +1,63 @@
+name: Sync Fork
+description: Rebase a forked repository's branch on top of an upstream repository's branch.
+author: The Browser Company
+
+inputs:
+  fork_repo:
+    description: The repository to update.
+    required: false
+    default: github.repository
+
+  fork_branch:
+    description: The branch to update.
+    required: true
+
+  upstream_repo:
+    description: The repository to pull changes from.
+    required: true
+
+  upstream_branch:
+    description: The branch to pull changes from.
+    required: true
+
+  upstream_host:
+    description: The upstream repository URL host, if not github.com.
+    required: false
+    default: 'github.com'
+
+  dry_run:
+    description: If true, changes are not pushed to the fork.
+    required: false
+    default: false
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.fork_repo }}
+        ref: ${{ inputs.fork_branch }}
+        # Fetch all commits from the fork to prevent arbitrary merge conflicts.
+        fetch-depth: 0
+        path: ${{ github.workspace }}/fork
+
+    - name: Rebase onto upstream
+      shell: pwsh
+      run: |
+        Set-StrictMode -Version 1
+
+        cd ${{ github.workspace }}/fork
+
+        git config --global user.name '${{ github.actor }}'
+        git config --global user.email '${{ github.actor }}@users.noreply.github.com'
+
+        git remote add upstream https://${{ inputs.upstream_host }}/${{ inputs.upstream_repo }}
+        git fetch upstream ${{ inputs.upstream_branch }} 
+        git checkout ${{ inputs.fork_branch }}
+        git rebase upstream/${{ inputs.upstream_branch }}
+
+    - name: Push changes
+      if: ${{ inputs.dry_run == 'false' || inputs.dry_run == false }}
+      shell: pwsh
+      run: git -C ${{ github.workspace }}/fork push origin ${{ inputs.fork_branch }} -f
+

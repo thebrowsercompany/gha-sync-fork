@@ -1,0 +1,23 @@
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run this action
+        uses: ./
+        with:
+          fork_repo: thebrowsercompany/firebase-cpp-sdk
+          fork_branch: compnerd/swift
+          upstream_repo: firebase/firebase-cpp-sdk
+          upstream_branch: main
+          dry_run: true
+
