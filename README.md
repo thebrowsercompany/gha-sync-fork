@@ -2,6 +2,14 @@
 
 A GitHub action to sync a forked repo's branch with an upstream repo's branch
 
+## Overview
+
+The fork's changes are rebased on top of any missing commits from the upstream
+repository. If there are merge conflicts, this action will fail until the conflicts
+are manually resolved. If there are no changes between the fork and upstream, no work
+is done. By default, the fork's entire commit history is fetched because this action
+doesn't know how many new commits the fork has received.
+
 [![.github/workflows/test.yml](https://github.com/thebrowsercompany/gha-sync-fork/actions/workflows/test.yml/badge.svg)](https://github.com/thebrowsercompany/gha-sync-fork/actions/workflows/test.yml)
 
 
