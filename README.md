@@ -1,2 +1,51 @@
 # gha-sync-fork
-GItHub action to sync a forked repo's branch with an upstream repo's branch
+
+A GitHub action to sync a forked repo's branch with an upstream repo's branch
+
+[![.github/workflows/test.yml](https://github.com/thebrowsercompany/gha-sync-fork/actions/workflows/test.yml/badge.svg)](https://github.com/thebrowsercompany/gha-sync-fork/actions/workflows/test.yml)
+
+
+## Usage
+
+An example workflow that runs this action:
+
+```yml
+- name: Sync my project
+  uses: thebrowsercompany/gha-sync-fork
+  with:
+    fork_repo: myuser/project
+    fork_branch: main
+    upstream_repo: otheruser/project
+    upstream_branch: main
+```
+
+### Inputs
+
+```yml
+fork_repo:
+  description: The repository to update.
+  required: false
+  default: github.repository
+
+fork_branch:
+  description: The branch to update.
+  required: true
+
+upstream_repo:
+  description: The repository to pull changes from.
+  required: true
+
+upstream_branch:
+  description: The branch to pull changes from.
+  required: true
+
+upstream_host:
+  description: The upstream repository URL host, if not github.com.
+  required: false
+  default: 'github.com'
+
+dry_run:
+  description: If true, changes are not pushed to the fork.
+  required: false
+  default: false
+```
