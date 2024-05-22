@@ -15,9 +15,9 @@ jobs:
       - name: Run this action
         uses: ./
         with:
-          fork_repo: thebrowsercompany/firebase-cpp-sdk
-          fork_branch: compnerd/swift
-          upstream_repo: firebase/firebase-cpp-sdk
+          fork_repo: kendalharland/swift-build
+          fork_branch: main
+          upstream_repo: compnerd/swift-build
           upstream_branch: main
           dry_run: true
 
