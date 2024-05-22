@@ -10,35 +10,59 @@ on:
 jobs:
 
   sync_analytics_swift:
-    name: "Sync thebrowsercompany/analytics-swift"
+    name: "Sync analytics-swift"
     runs-on: ubuntu-latest
     steps:
-      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+      - uses: actions/create-github-app-token@v1
+        id: token
+        with:
+          app-id: ${{ secrets.FORK_SYNCER_APP_ID }}
+          private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: analytics-swift
+      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
         with:
           fork_repo: thebrowsercompany/analytics-swift
           fork_branch: develop
           upstream_repo: segmentio/analytics-swift
           upstream_branch: main
+          token: ${{ steps.token.outputs.token }}
 
   sync_firebase_cpp_sdk:
-    name: "Sync thebrowsercompany/firebase-cpp-sdk"
+    name: "Sync firebase-cpp-sdk"
     runs-on: ubuntu-latest
     steps:
-      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+      - uses: actions/create-github-app-token@v1
+        id: token
+        with:
+          app-id: ${{ secrets.FORK_SYNCER_APP_ID }}
+          private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: firebase-cpp-sdk
+      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
         with:
           fork_repo: thebrowsercompany/firebase-cpp-sdk
           fork_branch: compnerd/swift
           upstream_repo: firebase/firebase-cpp-sdk
           upstream_branch: main
+          token: ${{ steps.token.outputs.token }}
 
   sync_swift_eventsource:
-    name: "Sync thebrowsercompany/swift-eventsource"
     runs-on: ubuntu-latest
+    name: "Sync swift-eventsource"
     steps:
-      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+      - uses: actions/create-github-app-token@v1
+        id: token
+        with:
+          app-id: ${{ secrets.FORK_SYNCER_APP_ID }}
+          private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: swift-eventsource
+      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
         with:
           fork_repo: thebrowsercompany/swift-eventsource
           fork_branch: main-bcny
           upstream_repo: launchdarkly/swift-eventsource
           upstream_branch: main
+          token: ${{ steps.token.outputs.token }}
 
