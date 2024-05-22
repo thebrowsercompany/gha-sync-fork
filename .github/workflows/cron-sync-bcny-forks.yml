@@ -1,0 +1,41 @@
+name: Cron - Sync BCNY forks
+
+on:
+  schedule:
+    # Every day 8:00 am UTC
+    - cron: '0 8 * * *'
+
+  workflow_dispatch:
+
+jobs:
+
+  sync_analytics_swift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+        with:
+          fork_repo: thebrowsercompany/analytics-swift
+          fork_branch: develop
+          upstream_repo: segmentio/analytics-swift
+          upstream_branch: main
+
+  sync_firebase_cpp_sdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+        with:
+          fork_repo: thebrowsercompany/firebase-cpp-sdk
+          fork_branch: compnerd/swift
+          upstream_repo: firebase/firebase-cpp-sdk
+          upstream_branch: main
+
+  sync_swift_eventsource:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: thebrowsercompany/gha-sync-fork@bd704c61db9000e8bbc1affe3d4199b7e3eb291c
+        with:
+          fork_repo: thebrowsercompany/swift-eventsource
+          fork_branch: main-bcny
+          upstream_repo: launchdarkly/swift-eventsource
+          upstream_branch: main
+
