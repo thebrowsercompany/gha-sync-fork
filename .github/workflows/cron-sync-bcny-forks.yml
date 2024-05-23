@@ -1,9 +1,9 @@
 name: Cron - Sync BCNY forks
 
 on:
-  # schedule:
-  # # Every day 8:00 am UTC
-  #  - cron: '0 8 * * *'
+  schedule:
+    # Every day 8:00 am UTC
+    - cron: '0 8 * * *'
 
   workflow_dispatch:
 
