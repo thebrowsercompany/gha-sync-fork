@@ -20,7 +20,7 @@ jobs:
           private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: analytics-swift
-      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
+      - uses: thebrowsercompany/gha-sync-fork@main
         with:
           fork_repo: thebrowsercompany/analytics-swift
           fork_branch: develop
@@ -39,7 +39,7 @@ jobs:
           private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: firebase-cpp-sdk
-      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
+      - uses: thebrowsercompany/gha-sync-fork@main
         with:
           fork_repo: thebrowsercompany/firebase-cpp-sdk
           fork_branch: compnerd/swift
@@ -58,7 +58,7 @@ jobs:
           private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: swift-eventsource
-      - uses: thebrowsercompany/gha-sync-fork@73f382706ed07f29b97b055031e69e7beb6c1795
+      - uses: thebrowsercompany/gha-sync-fork@main
         with:
           fork_repo: thebrowsercompany/swift-eventsource
           fork_branch: main-bcny
