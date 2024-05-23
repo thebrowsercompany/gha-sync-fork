@@ -1,0 +1,44 @@
+# This workflow is for testing whether a fork can be synced.
+# 
+# It can be used to verify whether the BCNY Fork Syncer app has
+# been properly authenticated and that there are no pre-existing
+# merge conflicts when setting up a new job to sync a forked project.
+
+name: Try sync fork
+
+on:
+  workflow_dispatch:
+    inputs:
+      fork_repo:
+        description: The forked repository to sync (without the 'thebrowsercompany/' prefix).
+        required: true
+      fork_branch:
+        description: The forked repository's branch.
+        required: true
+      upstream_repo:
+        description: The upstream repository to pull changes from.
+        required: true
+      upstream_branch:
+        description: The upstream repository's branch.
+        required: true
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: token
+        with:
+          app-id: ${{ secrets.FORK_SYNCER_APP_ID }}
+          private-key: ${{ secrets.FORK_SYNCER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ inputs.fork_repo }}
+      - uses: thebrowsercompany/gha-sync-fork@main
+        with:
+          dry_run: true
+          fork_repo: thebrowsercompany/${{ inputs.fork_repo }}
+          fork_branch: ${{ inputs.fork_branch }}
+          upstream_repo: ${{ inputs.upstream_repo }}
+          upstream_branch: ${{ inputs.upstream_branch }}
+          token: ${{ steps.token.outputs.token }}
+
