@@ -29,6 +29,10 @@ inputs:
     required: false
     default: false
 
+  token:
+    description: Authentication token to use for Git commands
+    required: false
+
 runs:
   using: composite
   steps:
@@ -39,6 +43,7 @@ runs:
         # Fetch all commits from the fork to prevent arbitrary merge conflicts.
         fetch-depth: 0
         path: ${{ github.workspace }}/fork
+        token: ${{ inputs.token || github.token }}
 
     - name: Rebase onto upstream
       shell: pwsh
