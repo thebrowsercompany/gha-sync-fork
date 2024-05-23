@@ -33,7 +33,6 @@ An example workflow that runs this action:
 fork_repo:
   description: The repository to update.
   required: false
-  default: github.repository
 
 fork_branch:
   description: The branch to update.
