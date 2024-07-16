@@ -56,18 +56,19 @@ runs:
         git config --global user.email '${{ github.actor }}@users.noreply.github.com'
 
         git remote add upstream https://${{ inputs.upstream_host }}/${{ inputs.upstream_repo }}
-        git fetch upstream ${{ inputs.upstream_branch }} 
+        git fetch upstream ${{ inputs.upstream_branch }}
 
-        # Store the list of commits we're about to rebase as a job summary:
-        $NewCommitsFromUpstream=(git log --format="[%h] %s" --no-merges upstream/${{ inputs.upstream_branch }} ^${{ inputs.fork_branch }})
-        echo "``````mermaid" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
-        echo "%%{init: { 'theme': 'default', 'gitGraph': { 'mainBranchName': '${{ inputs.upstream_repo}}/${{ inputs.upstream_branch }}', 'rotateCommitLabel': false}} }%%" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
-        echo "gitGraph TB:" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+        # Store the list of commits we're about to rebase as a job summary.
+        # --format is a GitHub flavored markdown table row.
+        $NewCommitsFromUpstream=(git log --format="|%h|%s|" --no-merges upstream/${{ inputs.upstream_branch }} ^${{ inputs.fork_branch }})
+
+        echo "|Commit|Description|" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+        echo "|:-----|:----------|" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+
         foreach ($Commit in $NewCommitsFromUpstream) {
           $Commit=$Commit -replace "`"","'"
-          echo "commit id: `"${Commit}`"" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+          echo "${Commit}" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
         }
-        echo "``````" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
 
         git checkout ${{ inputs.fork_branch }}
         git rebase upstream/${{ inputs.upstream_branch }}
